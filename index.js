@@ -28,18 +28,21 @@ const getModelPathFromCommandLineArgs = () => {
 };
 
 // Print a message at the start of the program
-const printWelcomeMessage = () => {
+const printWelcomeMessage = (version) => {
   console.log(
     chalk.green(
-      '-- 3D COMMERCE ASSET VALIDATOR --'
+      '-- 3D COMMERCE VALIDATOR --'
     )
+  );
+  console.log(
+    chalk.yellow('* Version: ' + version )
   );
 };
 
 // START
 try {
   const validator = new Validator();
-  printWelcomeMessage();
+  printWelcomeMessage(validator.version);
 
   // 1. Load Schema
   const schemaFullPath = getSchemaPathFromCommandLineArgs();
@@ -53,22 +56,34 @@ try {
   validator.generateReport();
 
   // Helpful to print the whole JSON object for testing during development
-  console.log(validator);
+  //console.log(validator);
 
   // 4. Show Report
-  console.log(chalk.magenta('=== Validation Report ==='));
+  // for formatting, find the length of the longest name
+  let longestNameLength = 0;
+  validator.report.getItems().forEach(item => {
+    if (item.name.length > longestNameLength) {
+      longestNameLength = item.name.length;
+    }
+  });
+  console.log(chalk.magenta('==== Validation Report ===='));
   // Loop through all available items in the report and print their status
   validator.report.getItems().forEach(item => {
+    let itemNameFormatted = item.name + ': ';
+    for (let i = item.name.length; i < longestNameLength; i++) {
+      itemNameFormatted = ' ' + itemNameFormatted;
+    }
     console.log(
-      item.name + ': ' +
+      itemNameFormatted +
       (item.tested ?
         (item.pass ? chalk.green('PASS') : chalk.red('FAIL'))
         :
         chalk.gray('NOT TESTED')
-      )
+      ) + ' | ' +
+      chalk.gray(item.message)
     );
   });
-  console.log(chalk.magenta('========================='));
+  console.log(chalk.magenta('==========================='));
 } catch (err) {
   console.log(chalk.red('ERROR: ' + err.message));
 }
