@@ -8,7 +8,7 @@
 node index.js {schema-json-filepath} {glb-model-filepath}
 
 ### About this project
-This is an implementation of the khronos-3d-commerce-validator npm package that
+This is an implementation of the 3dc-validator npm package that
 runs in node.js and will be compiled into a stand-alone executable for Windows,
 Mac, and Linux.
 
@@ -20,10 +20,10 @@ https://github.com/KhronosGroup/3DC-Asset-Creation/
 
 #### Checks currently available
 * File Size (min/max)
+* Triangle Count (max)
 
 #### Checks to be added
 * Dimensions
-* Triangle Count
 * Transparent Geometry Separated
 * Material Count
 * 0-1 UV Texture Space

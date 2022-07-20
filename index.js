@@ -1,5 +1,5 @@
 import chalk from 'chalk'; // For colored output
-import { Validator } from '@mikefesta/khronos-3d-commerce-validator';
+import { Validator } from '@mikefesta/3dc-validator';
 
 // Extract the current working path
 const getPathFromCommandLineArgs = () => {

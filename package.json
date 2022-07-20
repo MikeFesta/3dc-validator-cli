@@ -1,17 +1,17 @@
 {
-  "name": "@mikefesta/khronos-3d-commerce-validator-cli",
-  "version": "1.0.0-alpha.1",
+  "name": "@mikefesta/3dc-validator-cli",
+  "version": "1.0.0-alpha.2",
   "author": "Mike Festa",
   "description": "Read a glTF file and a JSON schema definition to perform a series of pass/fail checks based on the technical requirements and best practices described in the 3D Commerce Real-time Asset Creation Guidelines",
   "license": "SPDX-License-Identifier: Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MikeFesta/khronos-3d-commerce-validator-cli"
+    "url": "https://github.com/MikeFesta/3dc-validator-cli"
   },
   "main": "index.js",
   "type": "module",
   "dependencies": {
-    "@mikefesta/khronos-3d-commerce-validator": "^1.0.0-alpha.1",
+    "@mikefesta/3dc-validator": "^1.0.0-alpha.2",
     "chalk": "^5.0.1"
   }
 }
