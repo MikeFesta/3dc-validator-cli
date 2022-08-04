@@ -13,6 +13,8 @@
   "dependencies": {
     "@mikefesta/3dc-validator": "^1.0.0-alpha.6",
     "chalk": "^5.0.1"
+  },
+  "devDependencies": {
+    "tslib": "^2.4.0"
   }
 }
-
