@@ -71,9 +71,13 @@ try {
   // 5. Show Report
   // for formatting, find the length of the longest name
   let longestNameLength = 0;
+  let hasNotTestedItems = false;
   validator.report.getItems().forEach((item) => {
     if (item.name.length > longestNameLength) {
       longestNameLength = item.name.length;
+    }
+    if (item.tested === false) {
+      hasNotTestedItems = true;
     }
   });
   console.log(chalk.magenta("==== Validation Report ===="));
@@ -87,8 +91,8 @@ try {
       itemNameFormatted +
         (item.tested
           ? item.pass
-            ? chalk.green("PASS")
-            : chalk.red("FAIL")
+            ? chalk.green("PASS" + (hasNotTestedItems ? "      " : ""))
+            : chalk.red("FAIL" + (hasNotTestedItems ? "      " : ""))
           : chalk.gray("NOT TESTED")) +
         " | " +
         chalk.gray(item.message)
