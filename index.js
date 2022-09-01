@@ -46,6 +46,7 @@ const printWelcomeMessage = (version) => {
 // START
 try {
   const validator = new Validator();
+  validator.decimalDisplayPrecision = 2;
   printWelcomeMessage(validator.version);
 
   // 1. Load Schema
