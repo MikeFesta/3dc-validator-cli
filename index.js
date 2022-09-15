@@ -101,5 +101,9 @@ try {
   });
   console.log(chalk.magenta("==========================="));
 } catch (err) {
-  console.log(chalk.red("ERROR: " + err.message));
+  if (err) {
+    console.log(chalk.red("ERROR: " + err.message));
+  } else {
+    console.log(chalk.red("ERROR: unknown"));
+  }
 }
