@@ -1,5 +1,6 @@
 import chalk from "chalk"; // For colored output
 import { Validator } from "@mikefesta/3dc-validator";
+import { exit } from "process";
 
 // Extract the current working path
 const getPathFromCommandLineArgs = () => {
@@ -45,6 +46,7 @@ const printWelcomeMessage = (version) => {
 
 // START
 try {
+  const startTime = Date.now();
   const validator = new Validator();
   validator.decimalDisplayPrecision = 2;
   printWelcomeMessage(validator.version);
@@ -100,6 +102,9 @@ try {
     );
   });
   console.log(chalk.magenta("==========================="));
+  console.log(
+    "Total Time: " + ((Date.now() - startTime) / 1000).toFixed(3) + " seconds."
+  );
 } catch (err) {
   if (err) {
     console.log(chalk.red("ERROR: " + err.message));
@@ -107,3 +112,5 @@ try {
     console.log(chalk.red("ERROR: unknown"));
   }
 }
+
+exit(0);
