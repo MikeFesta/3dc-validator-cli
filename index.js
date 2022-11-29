@@ -51,7 +51,7 @@ try {
   validator.decimalDisplayPrecision = 2;
   printWelcomeMessage(validator.version);
 
-  // 1. Load Schema
+  // 1. Load Schema (schema should be loaded before model to know if index calculation is required)
   const schemaFullPath = getSchemaPathFromCommandLineArgs();
   await validator.schema.loadFromFileSystem(schemaFullPath);
 
