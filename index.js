@@ -17,6 +17,14 @@ let productInfoIndex = -1;
 let productInfoFilename = "";
 let schemaIndex = -1;
 let schemaFilename = "";
+let quietMode = false;
+
+// Suppress console.log messages if the -q flag was set
+const printIfNotQuiet = (message) => {
+  if (!quietMode) {
+    console.log(message);
+  }
+};
 
 argv.forEach((arg) => {
   // 0: node full path
@@ -26,6 +34,7 @@ argv.forEach((arg) => {
   // -p product dimensions (ends with .json)
   // required arguments:
   // -s schema (ends with .json)
+  // -q quiet mode
   // .glb or .gltf + .bin (+ images)
 
   // Supported file extensions
@@ -75,13 +84,17 @@ argv.forEach((arg) => {
     // specify the schema (optional). A .json file without a preceding argument will be treated as the schema.
     schemaIndex = i + 1;
   }
+  if (arg == "-q") {
+    // Prevent console messages
+    quietMode = true;
+  }
 
   i++;
 });
 
 // Verify that either a glb or gltf was provided
 if (glbFilename == "" && gltfFileName == "") {
-  console.log(chalk.red("A .glb or .gltf file needs to be provided"));
+  printIfNotQuiet(chalk.red("A .glb or .gltf file needs to be provided"));
   exit(1);
 }
 
@@ -124,7 +137,7 @@ if (outputIndex > 0 && outputJsonFilename == "" && outputCsvFilename == "") {
 
 // Verify that a schema was provided
 if (schemaFilename == "") {
-  console.log(chalk.red("A schema file needs to be provided"));
+  printIfNotQuiet(chalk.red("A schema file needs to be provided"));
   exit(1);
 }
 
@@ -132,7 +145,7 @@ if (
   gltfFileName &&
   !gltfSupportingFiles.map((i) => i.slice(-4)).includes(".bin")
 ) {
-  console.log(
+  printIfNotQuiet(
     chalk.red(
       "Using a .gltf file also needs to include a .bin file plus external textures"
     )
@@ -142,8 +155,8 @@ if (
 
 // Print a message at the start of the program
 const printWelcomeMessage = (version) => {
-  console.log(chalk.green("-- 3D COMMERCE VALIDATOR --"));
-  console.log(chalk.yellow("* Version: " + version));
+  printIfNotQuiet(chalk.green("-- 3D COMMERCE VALIDATOR --"));
+  printIfNotQuiet(chalk.yellow("* Version: " + version));
 };
 
 // START
@@ -172,7 +185,7 @@ try {
   validator.generateReport();
 
   // Helpful to print the whole JSON object for testing during development
-  //console.log(validator);
+  //printIfNotQuiet(validator);
 
   // 5. Show Report
   // for formatting, find the length of the longest name
@@ -186,14 +199,14 @@ try {
       hasNotTestedItems = true;
     }
   });
-  console.log(chalk.magenta("==== Validation Report ===="));
+  printIfNotQuiet(chalk.magenta("==== Validation Report ===="));
   // Loop through all available items in the report and print their status
   validator.report.getItems().forEach((item) => {
     let itemNameFormatted = item.name + ": ";
     for (let i = item.name.length; i < longestNameLength; i++) {
       itemNameFormatted = " " + itemNameFormatted;
     }
-    console.log(
+    printIfNotQuiet(
       itemNameFormatted +
         (item.tested
           ? item.pass
@@ -204,8 +217,8 @@ try {
         chalk.gray(item.message)
     );
   });
-  console.log(chalk.magenta("==========================="));
-  console.log(
+  printIfNotQuiet(chalk.magenta("==========================="));
+  printIfNotQuiet(
     "Total Time: " + ((Date.now() - startTime) / 1000).toFixed(3) + " seconds."
   );
   if (outputCsvFilename) {
@@ -215,7 +228,7 @@ try {
       {},
       (err) => {
         if (err) {
-          console.log("there was an error writing the csv file");
+          printIfNotQuiet("there was an error writing the csv file");
         }
       }
     );
@@ -227,16 +240,16 @@ try {
       {},
       (err) => {
         if (err) {
-          console.log("there was an error writing the csv file");
+          printIfNotQuiet("there was an error writing the csv file");
         }
       }
     );
   }
 } catch (err) {
   if (err) {
-    console.log(chalk.red("ERROR: " + err.message));
+    printIfNotQuiet(chalk.red("ERROR: " + err.message));
   } else {
-    console.log(chalk.red("ERROR: unknown"));
+    printIfNotQuiet(chalk.red("ERROR: unknown"));
   }
 }
 
